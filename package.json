@@ -1,0 +1,27 @@
+{
+  "name": "llm-guardrails-lab",
+  "version": "0.1.0",
+  "description": "Pipeline de proteção entre o usuário e um LLM: remoção de dados pessoais e testes de prompt injection.",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "report": "tsx src/report.ts",
+    "server": "tsx src/server.ts",
+    "setup": "npm install && npm --prefix web install",
+    "dev:all": "concurrently -k -n api,web -c yellow,magenta \"npm run server\" \"npm --prefix web run dev\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "concurrently": "^10.0.7",
+    "tsx": "^4.19.0",
+    "typescript": "^6.0.2",
+    "vitest": "^5.1.0"
+  }
+}
