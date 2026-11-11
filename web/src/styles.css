@@ -147,3 +147,4 @@ button.run:disabled { opacity: .4; cursor: not-allowed; }
 .verdict.bad { background: rgba(224, 98, 122, .14); border: 1px solid rgba(224, 98, 122, .45); color: var(--bad); }
 .verdict.good { background: rgba(79, 178, 134, .14); border: 1px solid rgba(79, 178, 134, .45); color: var(--ok); }
 .gap { margin: 12px 0 0; padding: 10px 12px; border-radius: 10px; background: rgba(224, 162, 74, .1); color: var(--warn); font-size: 13px; }
+.verdict.warn { background: rgba(224, 162, 74, .12); border: 1px solid rgba(224, 162, 74, .45); color: var(--warn); }

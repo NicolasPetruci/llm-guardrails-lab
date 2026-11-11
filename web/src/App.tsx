@@ -66,7 +66,7 @@ async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
 // --- Veredito ----------------------------------------------------------------
 
 interface Verdict {
-  tone: 'bad' | 'good';
+  tone: 'bad' | 'good' | 'warn';
   title: string;
   detail: string;
 }
@@ -96,13 +96,22 @@ function leakDetail(risk: Risk, form: LeakForm | null, guarded: boolean, hasPii:
   }
 }
 
+/** O redator só reconhece CPF, telefone e e-mail. Sem nenhum desses, o veredito sobre dado pessoal não diz nada. */
+const NOTHING_RECOGNIZED: Verdict = {
+  tone: 'warn',
+  title: 'NADA RECONHECIDO',
+  detail: 'O redator não achou CPF, telefone nem e-mail. Nome ou endereço no texto passam sem máscara, e esta tela não os detecta.',
+};
+
 function verdictUnprotected(r: RunResult, hasPii: boolean): Verdict {
+  if (r.risk === 'pii' && r.pii.length === 0) return NOTHING_RECOGNIZED;
   return r.unprotected.leaked
     ? { tone: 'bad', title: 'VAZOU', detail: leakDetail(r.risk, r.unprotected.leakForm, false, hasPii) }
     : { tone: 'good', title: 'SEM VAZAMENTO', detail: 'Resposta normal.' };
 }
 
 function verdictGuarded(r: RunResult, hasPii: boolean): Verdict {
+  if (r.risk === 'pii' && r.pii.length === 0) return NOTHING_RECOGNIZED;
   if (r.guarded.leaked) {
     return { tone: 'bad', title: 'VAZOU', detail: leakDetail(r.risk, r.guarded.leakForm, true, hasPii) };
   }
